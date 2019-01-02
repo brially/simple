@@ -8,8 +8,9 @@
 
 namespace LitelyFw\Models;
 
+use \LitelyFw\System\Interfaces\Model as ModelInterface;
 
-class Model
+class Model implements ModelInterface
 {
 
 }

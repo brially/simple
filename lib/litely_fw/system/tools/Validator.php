@@ -131,7 +131,7 @@ class Validator
                 }
             }
         }
-        if(isEmpty($errors)) $this->is_valid = true;
+        if(empty($errors)) $this->is_valid = true;
         else $this->is_valid = false;
         $this->errors = $errors;
 

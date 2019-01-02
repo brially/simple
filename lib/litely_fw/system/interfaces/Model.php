@@ -9,7 +9,7 @@
 namespace LitelyFw\System\Interfaces;
 
 
-class Model
+interface Model
 {
 
 }
