@@ -12,39 +12,94 @@ use \LitelyFw\System\Interfaces\Controller as ControllerInterface;
 
 class Controller implements ControllerInterface
 {
+    protected $is_api;
+
+    protected $method;
+
+    protected $post_input;
+
+    protected $get_input;
+
+    protected $id_field = 'id';
+
+    protected $view;
+
+    protected $view_404 = 'partial/404';
+
+
+
+
+
+    public function __construct($is_api = false)
+    {
+        $this->is_api = $is_api;
+
+        $this->method = $_SERVER['REQUEST_METHOD'];
+
+        $this->get_input = $_GET;
+
+        $this->post_input = $_POST;
+
+        $this->view = new View();
+
+    }
+
+    public final function serve(){
+        switch($this->method){
+            case "GET":
+                if(isset($this->get_input['edit']) && isset($this->get_input[$this->id_field]) ) return $this->edit($this->get_input[$this->id_field]);
+                if( isset($this->get_input[$this->id_field]) ) return $this->show($this->get_input[$this->id_field]);
+                if( isset($this->get_input['create']) ) return $this->create();
+                return $this->index();
+                break;
+            case "POST":
+                return $this->store($this->post_input);
+                break;
+            case "PUT":
+                if(isset($this->post_input[$this->id_field])) return $this->update($this->post_input[$this->id_field], $this->post_input);
+                break;
+            case "DELETE":
+                if(isset($this->post_input[$this->id_field])) return $this->destroy($this->post_input[$this->id_field]);
+                break;
+
+        }
+        return $this->return_404();
+
+    }
+
     public function index()
     {
-        // TODO: Implement index() method.
+        return $this->return_404();
     }
-
     public function create()
     {
-        // TODO: Implement create() method.
+        return $this->return_404();
     }
-
     public function store($data = [])
     {
-        // TODO: Implement store() method.
+        return $this->return_404();
     }
-
     public function show($id)
     {
-        // TODO: Implement show() method.
+        return $this->return_404();
     }
-
     public function edit($id)
     {
-        // TODO: Implement edit() method.
+        return $this->return_404();
     }
-
-    public function update($data)
+    public function update($id, $data)
     {
-        // TODO: Implement update() method.
+        return $this->return_404();
     }
-
     public function destroy($id)
     {
-        // TODO: Implement destroy() method.
+        return $this->return_404();
+    }
+
+    protected function return_404(){
+        if($this->is_api) $this->view->sendData(['error'=>404, "error_message"=>'page not found'], 404);
+        else $this->view->show($this->view_404, [], 404);
+        return die();
     }
 
 }
